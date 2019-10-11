@@ -157,6 +157,16 @@ public class User extends Auditable
         return rtnList;
     }
 
+    public List<Todo> getTodos()
+    {
+        return todos;
+    }
+
+    public void setTodos(List<Todo> todos)
+    {
+        this.todos = todos;
+    }
+
     @Override
     public String toString()
     {
