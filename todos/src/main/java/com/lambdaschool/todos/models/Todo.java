@@ -15,6 +15,7 @@ public class Todo extends Auditable
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long todoid;
 
+  @Column(nullable = false)
   private String description;
 
   @Temporal(TIMESTAMP)
