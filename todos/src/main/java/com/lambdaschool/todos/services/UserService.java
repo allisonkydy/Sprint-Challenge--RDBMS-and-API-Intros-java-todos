@@ -28,5 +28,5 @@ public interface UserService
 
     void addUserRole(long userid, long roleid);
 
-    Todo addTodo(Todo todo);
+    Todo addTodo(Todo todo, long userid);
 }

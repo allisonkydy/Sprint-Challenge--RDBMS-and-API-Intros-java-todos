@@ -72,15 +72,23 @@ public class UserController
     }
 
     // POST -- http://localhost:2019/users/todo/{userid}
-    // adds a todo to the assigned user
+    // adds a to-do to the assigned user
     @PostMapping(value = "/todo/{userid}",
                  consumes = {"application/json"})
     public ResponseEntity<?> addTodo(@Valid
                                      @RequestBody Todo todo,
                                      @PathVariable long userid)
     {
-        Todo newTodo = new Todo(todo.getDescription(), todo.getDatestarted(), userService.findUserById(userid));
-        userService.addTodo(newTodo);
+//        User currentUser = userService.findUserById(userid);
+//
+//        if (currentUser != null)
+//        {
+//            Todo newTodo = new Todo(todo.getDescription(), todo.getDatestarted(), currentUser);
+//            userService.addTodo(newTodo);
+//        }
+
+        userService.addTodo(todo, userid);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

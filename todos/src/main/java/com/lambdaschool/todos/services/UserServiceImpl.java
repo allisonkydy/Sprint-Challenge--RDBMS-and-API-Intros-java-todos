@@ -33,12 +33,15 @@ public class UserServiceImpl implements UserDetailsService,
     private TodoRepository todorepos;
 
     @Override
-    public Todo addTodo(Todo todo)
+    public Todo addTodo(Todo todo, long userid)
     {
         Todo newTodo = new Todo();
 
+        User currentUser = findUserById(userid);
+
         newTodo.setDescription(todo.getDescription());
         newTodo.setDatestarted(todo.getDatestarted());
+        newTodo.setUser(currentUser);
 
         return todorepos.save(newTodo);
     }
