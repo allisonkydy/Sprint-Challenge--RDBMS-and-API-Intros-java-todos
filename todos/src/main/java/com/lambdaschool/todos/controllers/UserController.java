@@ -1,5 +1,6 @@
 package com.lambdaschool.todos.controllers;
 
+import com.lambdaschool.todos.models.Todo;
 import com.lambdaschool.todos.models.User;
 import com.lambdaschool.todos.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +35,65 @@ public class UserController
                                     HttpStatus.OK);
     }
 
-//    // http://localhost:2019/users/users/
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-//    @GetMapping(value = "/users",
-//                produces = {"application/json"})
-//    public ResponseEntity<?> listAllUsers()
-//    {
-//        List<User> myUsers = userService.findAll();
-//        return new ResponseEntity<>(myUsers,
-//                                    HttpStatus.OK);
-//    }
+    // http://localhost:2019/users/users/
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value = "/users",
+                produces = {"application/json"})
+    public ResponseEntity<?> listAllUsers()
+    {
+        List<User> myUsers = userService.findAll();
+        return new ResponseEntity<>(myUsers,
+                                    HttpStatus.OK);
+    }
+
+    // POST -- http://localhost:2019/users/user
+    // adds a user
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping(value = "/user",
+                 consumes = {"application/json"},
+                 produces = {"application/json"})
+    public ResponseEntity<?> addNewUser(@Valid
+                                        @RequestBody
+                                            User newuser) throws URISyntaxException
+    {
+        newuser = userService.save(newuser);
+
+        // set the location header for the newly created resource
+        HttpHeaders responseHeaders = new HttpHeaders();
+        URI newUserURI = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{userid}")
+            .buildAndExpand(newuser.getUserid())
+            .toUri();
+        responseHeaders.setLocation(newUserURI);
+
+        return new ResponseEntity<>(null,
+            responseHeaders,
+            HttpStatus.CREATED);
+    }
+
+    // POST -- http://localhost:2019/users/todo/{userid}
+    // adds a todo to the assigned user
+    @PostMapping(value = "/todo/{userid}",
+                 consumes = {"application/json"})
+    public ResponseEntity<?> addTodo(@Valid
+                                     @RequestBody Todo todo,
+                                     @PathVariable long userid)
+    {
+        Todo newTodo = new Todo(todo.getDescription(), todo.getDatestarted(), userService.findUserById(userid));
+        userService.addTodo(newTodo);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    // DELETE - http://localhost:2019/users/user/{id}
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("/userid/{userid}")
+    public ResponseEntity<?> deleteUserById(
+        @PathVariable
+            long userid)
+    {
+        userService.delete(userid);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 //
 //    // http://localhost:2019/users/user/7
 //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -104,46 +154,6 @@ public class UserController
 //                                    HttpStatus.OK);
 //    }
 
-    // http://localhost:2019/users/user
-    //        {
-    //            "username": "Mojo",
-    //            "primaryemail": "mojo@lambdaschool.local",
-    //            "password" : "Coffee123",
-    //            "useremails": [
-    //            {
-    //                "useremail": "mojo@mymail.local"
-    //            },
-    //            {
-    //                "useremail": "mojo@mymail.local"
-    //            },
-    //            {
-    //                "useremail": "mojo@email.local"
-    //            }
-    //        ]
-    //        }
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-//    @PostMapping(value = "/user",
-//                 consumes = {"application/json"},
-//                 produces = {"application/json"})
-//    public ResponseEntity<?> addNewUser(@Valid
-//                                        @RequestBody
-//                                                User newuser) throws URISyntaxException
-//    {
-//        newuser = userService.save(newuser);
-//
-//        // set the location header for the newly created resource
-//        HttpHeaders responseHeaders = new HttpHeaders();
-//        URI newUserURI = ServletUriComponentsBuilder.fromCurrentRequest()
-//                                                    .path("/{userid}")
-//                                                    .buildAndExpand(newuser.getUserid())
-//                                                    .toUri();
-//        responseHeaders.setLocation(newUserURI);
-//
-//        return new ResponseEntity<>(null,
-//                                    responseHeaders,
-//                                    HttpStatus.CREATED);
-//    }
-
 
     // http://localhost:2019/users/user/7
     //        {
@@ -176,16 +186,6 @@ public class UserController
 //    }
 //
 //
-//    // http://localhost:2019/users/user/14
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-//    @DeleteMapping("/user/{id}")
-//    public ResponseEntity<?> deleteUserById(
-//            @PathVariable
-//                    long id)
-//    {
-//        userService.delete(id);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
 //
 //    // http://localhost:2019/users/user/15/role/2
 //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")

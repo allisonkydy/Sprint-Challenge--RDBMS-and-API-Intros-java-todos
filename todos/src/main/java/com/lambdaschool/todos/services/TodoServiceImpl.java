@@ -5,6 +5,10 @@ import com.lambdaschool.todos.repositories.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service(value = "todoService")
 public class TodoServiceImpl implements TodoService
 {
@@ -14,6 +18,35 @@ public class TodoServiceImpl implements TodoService
   @Override
   public Todo updateTodo(Todo todo, long todoid)
   {
+    Todo currentTodo = todorepos.findById(todoid).orElseThrow(() -> new EntityNotFoundException(Long.toString(todoid)));
+
+    if (todo.getDatestarted() != null)
+    {
+      currentTodo.setDatestarted(todo.getDatestarted());
+    }
+
+    if (todo.getDescription() != null)
+    {
+      currentTodo.setDescription(todo.getDescription());
+    }
+
+    if (todo.getUser() != null)
+    {
+      currentTodo.setUser(todo.getUser());
+    }
+
+    currentTodo.setCompleted(todo.isCompleted());
+
     return todorepos.save(todo);
+  }
+
+  @Override
+  public List<Todo> findAllTodos()
+  {
+    List<Todo> rtnList = new ArrayList<>();
+
+    todorepos.findAll().iterator().forEachRemaining(rtnList::add);
+
+    return rtnList;
   }
 }

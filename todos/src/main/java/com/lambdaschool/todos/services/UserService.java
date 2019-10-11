@@ -1,5 +1,6 @@
 package com.lambdaschool.todos.services;
 
+import com.lambdaschool.todos.models.Todo;
 import com.lambdaschool.todos.models.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,4 +27,6 @@ public interface UserService
     void deleteUserRole(long userid, long roleid);
 
     void addUserRole(long userid, long roleid);
+
+    Todo addTodo(Todo todo);
 }

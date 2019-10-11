@@ -1,10 +1,8 @@
 package com.lambdaschool.todos.services;
 
-import com.lambdaschool.todos.models.Role;
-import com.lambdaschool.todos.models.User;
-import com.lambdaschool.todos.models.UserRoles;
-import com.lambdaschool.todos.models.Useremail;
+import com.lambdaschool.todos.models.*;
 import com.lambdaschool.todos.repositories.RoleRepository;
+import com.lambdaschool.todos.repositories.TodoRepository;
 import com.lambdaschool.todos.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -30,6 +28,20 @@ public class UserServiceImpl implements UserDetailsService,
 
     @Autowired
     private RoleRepository rolerepos;
+
+    @Autowired
+    private TodoRepository todorepos;
+
+    @Override
+    public Todo addTodo(Todo todo)
+    {
+        Todo newTodo = new Todo();
+
+        newTodo.setDescription(todo.getDescription());
+        newTodo.setDatestarted(todo.getDatestarted());
+
+        return todorepos.save(newTodo);
+    }
 
     @Transactional
     @Override

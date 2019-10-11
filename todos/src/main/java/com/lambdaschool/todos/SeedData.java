@@ -26,9 +26,9 @@ public class SeedData implements CommandLineRunner
     @Override
     public void run(String[] args) throws Exception
     {
-        Role r1 = new Role("admin");
-        Role r2 = new Role("user");
-        Role r3 = new Role("data");
+        Role r1 = new Role("ADMIN");
+        Role r2 = new Role("USER");
+        Role r3 = new Role("DATA");
 
         roleService.save(r1);
         roleService.save(r2);

@@ -24,4 +24,13 @@ public class TodoController
     todoService.updateTodo(todo, todoid);
     return new ResponseEntity<>(HttpStatus.OK);
   }
+
+  // GET -- http://localhost:2019/todos/todos
+  // get all todos
+  @GetMapping(value = "/todos",
+              produces = {"application/json"})
+  public ResponseEntity<?> getAllTodos()
+  {
+    return new ResponseEntity<>(todoService.findAllTodos(), HttpStatus.OK);
+  }
 }
