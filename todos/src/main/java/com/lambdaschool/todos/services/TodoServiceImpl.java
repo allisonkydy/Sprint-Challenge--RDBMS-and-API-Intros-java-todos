@@ -33,14 +33,9 @@ public class TodoServiceImpl implements TodoService
       currentTodo.setDescription(todo.getDescription());
     }
 
-    if (todo.getUser() != null)
-    {
-      currentTodo.setUser(todo.getUser());
-    }
-
     currentTodo.setCompleted(todo.isCompleted());
 
-    return todorepos.save(todo);
+    return todorepos.save(currentTodo);
   }
 
   @Override

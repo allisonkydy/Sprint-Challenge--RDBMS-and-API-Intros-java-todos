@@ -79,16 +79,7 @@ public class UserController
                                      @RequestBody Todo todo,
                                      @PathVariable long userid)
     {
-//        User currentUser = userService.findUserById(userid);
-//
-//        if (currentUser != null)
-//        {
-//            Todo newTodo = new Todo(todo.getDescription(), todo.getDatestarted(), currentUser);
-//            userService.addTodo(newTodo);
-//        }
-
         userService.addTodo(todo, userid);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
