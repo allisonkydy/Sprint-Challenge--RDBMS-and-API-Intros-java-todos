@@ -4,17 +4,20 @@ import com.lambdaschool.todos.models.Todo;
 import com.lambdaschool.todos.repositories.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @Service(value = "todoService")
 public class TodoServiceImpl implements TodoService
 {
   @Autowired
   private TodoRepository todorepos;
 
+  @Transactional
   @Override
   public Todo updateTodo(Todo todo, long todoid)
   {

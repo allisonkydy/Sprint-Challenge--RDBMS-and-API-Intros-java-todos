@@ -17,7 +17,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Transactional
 @Service(value = "userService")
 public class UserServiceImpl implements UserDetailsService,
         UserService
