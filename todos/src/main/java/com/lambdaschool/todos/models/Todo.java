@@ -7,6 +7,8 @@ import java.util.Date;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
+@Entity
+@Table(name = "todos")
 public class Todo extends Auditable
 {
   @Id
