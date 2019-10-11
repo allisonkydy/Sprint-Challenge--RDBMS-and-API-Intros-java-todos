@@ -132,6 +132,12 @@ public class UserServiceImpl implements UserDetailsService,
                                       ue.getUseremail()));
         }
 
+        for (Todo t : user.getTodos())
+        {
+            newUser.getTodos()
+                .add(new Todo(t.getDescription(), t.getDatestarted(), newUser));
+        }
+
         return userrepos.save(newUser);
     }
 
